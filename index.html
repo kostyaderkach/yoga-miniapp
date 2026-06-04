@@ -78,7 +78,7 @@
 
     .toolbar {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 4px;
       padding: 5px;
       margin: 10px 0;
@@ -372,6 +372,24 @@
       color: #9a948d;
     }
 
+    .login-card {
+      display: grid;
+      gap: 12px;
+      background: var(--surface);
+      border: 1px solid rgba(31, 35, 33, 0.08);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    .login-title {
+      margin: 0;
+      color: var(--ink);
+      font-size: 20px;
+      font-weight: 850;
+      line-height: 1.15;
+    }
+
     .format-toggle {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -505,7 +523,7 @@
 
     <div class="toolbar" role="tablist" aria-label="Розділи">
       <button class="tab active" id="classesTab" type="button">Розклад</button>
-      <button class="tab" id="bookingsTab" type="button">Адмін</button>
+      <button class="tab hidden" id="bookingsTab" type="button">Адмін</button>
     </div>
 
     <section id="classesView" class="stack"></section>
@@ -523,6 +541,7 @@
     }
 
     const telegramUserName = getTelegramUserName();
+    const shouldOpenAdmin = new URLSearchParams(window.location.search).get('admin') === '1';
 
     const state = {
       classes: [],
@@ -541,14 +560,16 @@
     classesTab.addEventListener('click', () => showView('classes'));
     bookingsTab.addEventListener('click', openAdmin);
 
+    if (shouldOpenAdmin) {
+      bookingsTab.classList.remove('hidden');
+    }
+
     function openAdmin() {
       if (!state.isAdmin) {
-        const pass = prompt('Пароль адміністратора:');
-        if (pass !== ADMIN_PASSWORD) {
-          bookingsView.innerHTML = '<div class="notice">Адмін-доступ не відкрито.</div>';
-          return;
-        }
-        state.isAdmin = true;
+        bookingsTab.classList.remove('hidden');
+        showView('bookings');
+        renderAdminLogin();
+        return;
       }
 
       showView('bookings');
@@ -584,6 +605,7 @@
         state.bookings = Array.isArray(bookings) ? bookings : [];
         renderClasses();
         renderBookings();
+        if (shouldOpenAdmin) openAdmin();
       } catch (error) {
         classesView.innerHTML = `<div class="notice">Не вдалося завантажити дані. Перевір API URL і доступ до Apps Script.</div>`;
       } finally {
@@ -667,7 +689,7 @@
 
     function renderBookings() {
       if (!state.isAdmin) {
-        bookingsView.innerHTML = '<div class="notice">Цей розділ доступний тільки адміністратору.</div>';
+        renderAdminLogin();
         return;
       }
 
@@ -763,6 +785,34 @@
         button.addEventListener('click', deleteBooking);
       });
       bindBookingFilters();
+    }
+
+    function renderAdminLogin() {
+      bookingsView.innerHTML = `
+        <form class="login-card" id="adminLoginForm">
+          <div>
+            <h2 class="login-title">Адмін-доступ</h2>
+            <p class="meta booking-details">Введи пароль, щоб переглянути записи.</p>
+          </div>
+          <div>
+            <label>Пароль</label>
+            <input id="adminPasswordInput" type="password" autocomplete="current-password" placeholder="Пароль адміністратора">
+          </div>
+          <button class="submit-button" type="submit">Увійти</button>
+        </form>
+      `;
+
+      document.querySelector('#adminLoginForm').addEventListener('submit', event => {
+        event.preventDefault();
+        const password = document.querySelector('#adminPasswordInput').value;
+        if (password !== ADMIN_PASSWORD) {
+          bookingsView.innerHTML = '<div class="notice">Невірний пароль.</div>';
+          return;
+        }
+
+        state.isAdmin = true;
+        renderBookings();
+      });
     }
 
     function renderAdminToolbar() {
