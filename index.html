@@ -76,6 +76,58 @@
       line-height: 1.38;
     }
 
+    .zoom-block {
+      display: grid;
+      gap: 5px;
+      margin-top: 10px;
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+    }
+
+    .zoom-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .zoom-link {
+      color: var(--sage-dark);
+      font-size: 13px;
+      font-weight: 760;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+      text-decoration: none;
+    }
+
+    .zoom-link:active,
+    .zoom-link:hover {
+      text-decoration: underline;
+    }
+
+    .zoom-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      min-height: 38px;
+      border: 0;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--sage-dark), var(--sage));
+      color: #fff;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 820;
+      text-decoration: none;
+      box-shadow: 0 10px 18px rgba(11, 111, 101, 0.18);
+    }
+
+    .copy-status {
+      min-height: 18px;
+      color: var(--sage-dark);
+      font-size: 12px;
+      font-weight: 720;
+    }
+
     .toolbar {
       display: grid;
       grid-template-columns: 1fr;
@@ -156,7 +208,7 @@
       margin: 0;
       font-size: 24px;
       line-height: 1.04;
-      font-weight: 850;
+      font-weight: 720;
       letter-spacing: 0;
     }
 
@@ -516,12 +568,19 @@
   <main>
     <header>
       <div class="brand-card">
-        <h1 class="wordmark">Valeoyoga</h1>
-        <p class="subtitle">Розклад на тиждень. Обери практику, формат і залиш ім'я для запису.</p>
+        <p class="subtitle">Намасте, йогині та йоги. Розклад на тиждень: обери практику, формат і залиш ім'я для запису.</p>
+        <div class="zoom-block">
+          <span class="zoom-label">Посилання на Zoom</span>
+          <a class="zoom-link" href="https://us06web.zoom.us/j/86091918352?pwd=O0fiU4hRliAt4PNzvckupCuDdisL3I.I" target="_blank" rel="noopener noreferrer">
+            Відкрити Zoom
+          </a>
+          <div class="copy-status" id="zoomCopyStatus"></div>
+          <button class="zoom-button" id="copyZoomButton" type="button">Копіювати посилання</button>
+        </div>
       </div>
     </header>
 
-    <div class="toolbar" role="tablist" aria-label="Розділи">
+    <div class="toolbar hidden" id="toolbar" role="tablist" aria-label="Розділи">
       <button class="tab active" id="classesTab" type="button">Розклад</button>
       <button class="tab hidden" id="bookingsTab" type="button">Адмін</button>
     </div>
@@ -533,6 +592,7 @@
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbxLBAyJqy1iO2Pvt97sUbqkqs7eZxlv3PZZYgdplA18tJBqqNWOsXCddAGg50_0Xch7/exec';
     const ADMIN_PASSWORD = 'admin';
+    const ZOOM_URL = 'https://us06web.zoom.us/j/86091918352?pwd=O0fiU4hRliAt4PNzvckupCuDdisL3I.I';
 
     const tg = window.Telegram && window.Telegram.WebApp;
     if (tg) {
@@ -554,18 +614,42 @@
 
     const classesView = document.querySelector('#classesView');
     const bookingsView = document.querySelector('#bookingsView');
+    const toolbar = document.querySelector('#toolbar');
     const classesTab = document.querySelector('#classesTab');
     const bookingsTab = document.querySelector('#bookingsTab');
+    const copyZoomButton = document.querySelector('#copyZoomButton');
+    const zoomCopyStatus = document.querySelector('#zoomCopyStatus');
 
     classesTab.addEventListener('click', () => showView('classes'));
     bookingsTab.addEventListener('click', openAdmin);
+    copyZoomButton.addEventListener('click', copyZoomLink);
+
+    async function copyZoomLink() {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(ZOOM_URL);
+        } else {
+          const input = document.createElement('textarea');
+          input.value = ZOOM_URL;
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand('copy');
+          input.remove();
+        }
+        zoomCopyStatus.textContent = 'Посилання скопійовано';
+      } catch (error) {
+        zoomCopyStatus.textContent = 'Не вдалося скопіювати. Натисни посилання вище.';
+      }
+    }
 
     if (shouldOpenAdmin) {
+      toolbar.classList.remove('hidden');
       bookingsTab.classList.remove('hidden');
     }
 
     function openAdmin() {
       if (!state.isAdmin) {
+        toolbar.classList.remove('hidden');
         bookingsTab.classList.remove('hidden');
         showView('bookings');
         renderAdminLogin();
@@ -627,7 +711,6 @@
           <div class="class-hero">
             <div class="class-top">
               <div>
-                <p class="eyebrow">Доступне заняття</p>
                 <h2 class="class-name">${escapeHtml(item.name || 'Заняття')}</h2>
               </div>
               <span class="badge">${escapeHtml(item.offlineSpots || '0')} місць</span>
@@ -811,6 +894,8 @@
         }
 
         state.isAdmin = true;
+        toolbar.classList.remove('hidden');
+        bookingsTab.classList.remove('hidden');
         renderBookings();
       });
     }
