@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YogaSpace</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f3ee;
+      --text: #202124;
+      --muted: #6b625b;
+      --card: #ffffff;
+      --line: #e1d9cf;
+      --accent: #2f7d62;
+      --accent-dark: #24614c;
+      --danger: #b3261e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      width: min(720px, 100%);
+      margin: 0 auto;
+      padding: 20px 16px 32px;
+    }
+
+    header {
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 30px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      margin: 18px 0;
+    }
+
+    .tab {
+      flex: 1;
+      border: 1px solid var(--line);
+      background: #fffaf4;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 15px;
+      font-weight: 650;
+    }
+
+    .tab.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .class-card,
+    .booking-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: 0 1px 2px rgba(32, 33, 36, 0.05);
+    }
+
+    .class-top,
+    .booking-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .class-name,
+    .booking-name {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .badge {
+      flex: 0 0 auto;
+      border-radius: 999px;
+      background: #e3f1eb;
+      color: var(--accent-dark);
+      padding: 5px 9px;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .meta {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--text);
+      padding: 9px 10px;
+      font: inherit;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    button {
+      min-height: 42px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 14px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: 0.65;
+    }
+
+    .delete {
+      background: transparent;
+      border: 1px solid #e8bbb7;
+      color: var(--danger);
+    }
+
+    .notice {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fffaf4;
+      color: var(--muted);
+      padding: 14px;
+      font-size: 15px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>YogaSpace</h1>
+      <p class="subtitle">Расписание занятий и запись</p>
+    </header>
+
+    <div class="toolbar" role="tablist" aria-label="Разделы">
+      <button class="tab active" id="classesTab" type="button">Занятия</button>
+      <button class="tab" id="bookingsTab" type="button">Мои записи</button>
+    </div>
+
+    <section id="classesView" class="stack"></section>
+    <section id="bookingsView" class="stack hidden"></section>
+  </main>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxLBAyJqy1iO2Pvt97sUbqkqs7eZxlv3PZZYgdplA18tJBqqNWOsXCddAGg50_0Xch7/exec';
+
+    const tg = window.Telegram && window.Telegram.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
+
+    const state = {
+      classes: [],
+      bookings: [],
+      loading: false
+    };
+
+    const classesView = document.querySelector('#classesView');
+    const bookingsView = document.querySelector('#bookingsView');
+    const classesTab = document.querySelector('#classesTab');
+    const bookingsTab = document.querySelector('#bookingsTab');
+
+    classesTab.addEventListener('click', () => showView('classes'));
+    bookingsTab.addEventListener('click', () => showView('bookings'));
+
+    function showView(view) {
+      const isClasses = view === 'classes';
+      classesTab.classList.toggle('active', isClasses);
+      bookingsTab.classList.toggle('active', !isClasses);
+      classesView.classList.toggle('hidden', !isClasses);
+      bookingsView.classList.toggle('hidden', isClasses);
+      if (!isClasses) renderBookings();
+    }
+
+    async function request(action, options = {}) {
+      const url = options.method === 'POST' ? API_URL : `${API_URL}?action=${encodeURIComponent(action)}`;
+      const response = await fetch(url, {
+        method: options.method || 'GET',
+        headers: options.method === 'POST' ? { 'Content-Type': 'text/plain;charset=utf-8' } : undefined,
+        body: options.body ? JSON.stringify({ action, ...options.body }) : undefined
+      });
+      return response.json();
+    }
+
+    async function loadData() {
+      setLoading(true);
+      try {
+        const [classes, bookings] = await Promise.all([
+          request('getClasses'),
+          request('getBookings')
+        ]);
+        state.classes = Array.isArray(classes) ? classes : [];
+        state.bookings = Array.isArray(bookings) ? bookings : [];
+        renderClasses();
+        renderBookings();
+      } catch (error) {
+        classesView.innerHTML = `<div class="notice">Не получилось загрузить данные. Проверь API URL и доступ к Apps Script.</div>`;
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    function renderClasses() {
+      if (!state.classes.length) {
+        classesView.innerHTML = '<div class="notice">Пока нет занятий. Добавь строки на лист Classes в Google Таблице.</div>';
+        return;
+      }
+
+      classesView.innerHTML = state.classes.map(item => `
+        <article class="class-card">
+          <div class="class-top">
+            <h2 class="class-name">${escapeHtml(item.name || 'Занятие')}</h2>
+            <span class="badge">${escapeHtml(item.offlineSpots || '0')} мест</span>
+          </div>
+          <p class="meta">${escapeHtml(item.day || '')} ${escapeHtml(item.time || '')}</p>
+          <form class="form-grid" data-class-id="${escapeHtml(item.id)}">
+            <div>
+              <label>Имя</label>
+              <input name="name" autocomplete="name" required placeholder="Как тебя записать">
+            </div>
+            <div>
+              <label>Формат</label>
+              <select name="format">
+                <option value="offline">Офлайн</option>
+                <option value="online">Онлайн</option>
+              </select>
+            </div>
+            <button type="submit">Записаться</button>
+          </form>
+        </article>
+      `).join('');
+
+      document.querySelectorAll('form[data-class-id]').forEach(form => {
+        form.addEventListener('submit', addBooking);
+      });
+    }
+
+    function renderBookings() {
+      if (!state.bookings.length) {
+        bookingsView.innerHTML = '<div class="notice">Записей пока нет.</div>';
+        return;
+      }
+
+      bookingsView.innerHTML = state.bookings.map(item => {
+        const classItem = state.classes.find(c => String(c.id) === String(item.classId));
+        const title = classItem ? classItem.name : `Занятие #${item.classId}`;
+        const date = item.timestamp ? new Date(item.timestamp).toLocaleString('ru-RU') : '';
+        return `
+          <article class="booking-card">
+            <div class="booking-top">
+              <div>
+                <h2 class="booking-name">${escapeHtml(title)}</h2>
+                <p class="meta">${escapeHtml(item.name || '')} · ${escapeHtml(item.format || '')}<br>${escapeHtml(date)}</p>
+              </div>
+              <button class="delete" type="button" data-booking-id="${escapeHtml(item.id)}">Удалить</button>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      document.querySelectorAll('[data-booking-id]').forEach(button => {
+        button.addEventListener('click', deleteBooking);
+      });
+    }
+
+    async function addBooking(event) {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const button = form.querySelector('button');
+      button.disabled = true;
+
+      try {
+        const data = new FormData(form);
+        const result = await request('addBooking', {
+          method: 'POST',
+          body: {
+            classId: form.dataset.classId,
+            name: data.get('name'),
+            format: data.get('format')
+          }
+        });
+        if (result.success) {
+          form.reset();
+          await loadData();
+          showView('bookings');
+        }
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function deleteBooking(event) {
+      const button = event.currentTarget;
+      button.disabled = true;
+
+      try {
+        const result = await request('deleteBooking', {
+          method: 'POST',
+          body: { id: button.dataset.bookingId }
+        });
+        if (result.success) {
+          await loadData();
+          showView('bookings');
+        }
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    function setLoading(isLoading) {
+      state.loading = isLoading;
+      if (isLoading) {
+        classesView.innerHTML = '<div class="notice">Загружаю...</div>';
+      }
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      })[char]);
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
