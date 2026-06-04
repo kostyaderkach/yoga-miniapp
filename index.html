@@ -412,6 +412,8 @@
       tg.expand();
     }
 
+    const telegramUserName = getTelegramUserName();
+
     const state = {
       classes: [],
       bookings: [],
@@ -493,7 +495,7 @@
           <form class="form-grid" data-class-id="${escapeHtml(item.id)}">
             <div>
               <label>Ім'я</label>
-              <input name="name" autocomplete="name" required placeholder="Як тебе записати">
+              <input name="name" autocomplete="name" required placeholder="Як тебе записати" value="${escapeHtml(telegramUserName)}">
             </div>
             <div>
               <span class="field-label">Формат</span>
@@ -616,6 +618,18 @@
       if (value === 'online') return 'Онлайн';
       if (value === 'offline') return 'Офлайн';
       return escapeHtml(value || '');
+    }
+
+    function getTelegramUserName() {
+      const user = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
+      if (!user) return '';
+
+      const fullName = [user.first_name, user.last_name]
+        .filter(Boolean)
+        .join(' ')
+        .trim();
+
+      return fullName || user.username || '';
     }
 
     function dayLabel(value) {
