@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="uk">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -189,12 +189,12 @@
   <main>
     <header>
       <h1>YogaSpace</h1>
-      <p class="subtitle">Расписание занятий и запись</p>
+      <p class="subtitle">Розклад занять і запис</p>
     </header>
 
     <div class="toolbar" role="tablist" aria-label="Разделы">
-      <button class="tab active" id="classesTab" type="button">Занятия</button>
-      <button class="tab" id="bookingsTab" type="button">Мои записи</button>
+      <button class="tab active" id="classesTab" type="button">Заняття</button>
+      <button class="tab" id="bookingsTab" type="button">Мої записи</button>
     </div>
 
     <section id="classesView" class="stack"></section>
@@ -255,7 +255,7 @@
         renderClasses();
         renderBookings();
       } catch (error) {
-        classesView.innerHTML = `<div class="notice">Не получилось загрузить данные. Проверь API URL и доступ к Apps Script.</div>`;
+        classesView.innerHTML = `<div class="notice">Не вдалося завантажити дані. Перевір API URL і доступ до Apps Script.</div>`;
       } finally {
         setLoading(false);
       }
@@ -263,30 +263,30 @@
 
     function renderClasses() {
       if (!state.classes.length) {
-        classesView.innerHTML = '<div class="notice">Пока нет занятий. Добавь строки на лист Classes в Google Таблице.</div>';
+        classesView.innerHTML = '<div class="notice">Поки немає занять. Додай рядки на аркуш Classes у Google Таблиці.</div>';
         return;
       }
 
       classesView.innerHTML = state.classes.map(item => `
         <article class="class-card">
           <div class="class-top">
-            <h2 class="class-name">${escapeHtml(item.name || 'Занятие')}</h2>
-            <span class="badge">${escapeHtml(item.offlineSpots || '0')} мест</span>
+            <h2 class="class-name">${escapeHtml(item.name || 'Заняття')}</h2>
+            <span class="badge">${escapeHtml(item.offlineSpots || '0')} місць</span>
           </div>
           <p class="meta">${escapeHtml(item.day || '')} ${escapeHtml(item.time || '')}</p>
           <form class="form-grid" data-class-id="${escapeHtml(item.id)}">
             <div>
-              <label>Имя</label>
-              <input name="name" autocomplete="name" required placeholder="Как тебя записать">
+              <label>Ім'я</label>
+              <input name="name" autocomplete="name" required placeholder="Як тебе записати">
             </div>
             <div>
               <label>Формат</label>
               <select name="format">
-                <option value="offline">Офлайн</option>
                 <option value="online">Онлайн</option>
+                <option value="offline">Офлайн</option>
               </select>
             </div>
-            <button type="submit">Записаться</button>
+            <button type="submit">Записатися</button>
           </form>
         </article>
       `).join('');
@@ -298,14 +298,14 @@
 
     function renderBookings() {
       if (!state.bookings.length) {
-        bookingsView.innerHTML = '<div class="notice">Записей пока нет.</div>';
+        bookingsView.innerHTML = '<div class="notice">Записів поки немає.</div>';
         return;
       }
 
       bookingsView.innerHTML = state.bookings.map(item => {
         const classItem = state.classes.find(c => String(c.id) === String(item.classId));
-        const title = classItem ? classItem.name : `Занятие #${item.classId}`;
-        const date = item.timestamp ? new Date(item.timestamp).toLocaleString('ru-RU') : '';
+        const title = classItem ? classItem.name : `Заняття #${item.classId}`;
+        const date = item.timestamp ? new Date(item.timestamp).toLocaleString('uk-UA') : '';
         return `
           <article class="booking-card">
             <div class="booking-top">
@@ -313,7 +313,7 @@
                 <h2 class="booking-name">${escapeHtml(title)}</h2>
                 <p class="meta">${escapeHtml(item.name || '')} · ${escapeHtml(item.format || '')}<br>${escapeHtml(date)}</p>
               </div>
-              <button class="delete" type="button" data-booking-id="${escapeHtml(item.id)}">Удалить</button>
+              <button class="delete" type="button" data-booking-id="${escapeHtml(item.id)}">Видалити</button>
             </div>
           </article>
         `;
@@ -371,7 +371,7 @@
     function setLoading(isLoading) {
       state.loading = isLoading;
       if (isLoading) {
-        classesView.innerHTML = '<div class="notice">Загружаю...</div>';
+        classesView.innerHTML = '<div class="notice">Завантажую...</div>';
       }
     }
 
