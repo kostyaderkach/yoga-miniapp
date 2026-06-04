@@ -3,19 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>YogaSpace</title>
+  <title>Valeoyoga</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
       color-scheme: light;
-      --bg: #f7f3ee;
-      --text: #202124;
-      --muted: #6b625b;
-      --card: #ffffff;
-      --line: #e1d9cf;
-      --accent: #2f7d62;
-      --accent-dark: #24614c;
-      --danger: #b3261e;
+      --bg: #f4f7fb;
+      --surface: #ffffff;
+      --surface-soft: #eef3f6;
+      --ink: #17201c;
+      --muted: #667085;
+      --line: #dce3ea;
+      --sage: #18a38d;
+      --sage-dark: #0b6f65;
+      --clay: #ff8a65;
+      --sky: #5d7cfa;
+      --danger: #aa3328;
+      --shadow: 0 18px 48px rgba(24, 33, 45, 0.11);
     }
 
     * {
@@ -24,69 +28,111 @@
 
     body {
       margin: 0;
-      background: var(--bg);
-      color: var(--text);
+      min-height: 100vh;
+      background:
+        linear-gradient(180deg, #ffffff 0, rgba(255, 255, 255, 0) 280px),
+        linear-gradient(135deg, rgba(24, 163, 141, 0.12), rgba(93, 124, 250, 0.08) 48%, rgba(255, 138, 101, 0.08)),
+        var(--bg);
+      color: var(--ink);
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     main {
       width: min(720px, 100%);
       margin: 0 auto;
-      padding: 20px 16px 32px;
+      padding: 14px 12px 28px;
     }
 
     header {
-      margin-bottom: 18px;
+      padding: 6px 0 14px;
     }
 
-    h1 {
-      margin: 0 0 6px;
-      font-size: 30px;
-      line-height: 1.1;
+    .brand-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(31, 35, 33, 0.08);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(239, 247, 249, 0.92)),
+        var(--surface);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .wordmark {
+      margin: 0;
+      color: var(--ink);
+      font-size: 36px;
+      line-height: 1;
+      font-weight: 850;
       letter-spacing: 0;
     }
 
     .subtitle {
-      margin: 0;
+      max-width: 520px;
+      margin: 10px 0 0;
       color: var(--muted);
-      font-size: 15px;
+      font-size: 16px;
+      line-height: 1.5;
     }
 
     .toolbar {
-      display: flex;
-      gap: 8px;
-      margin: 18px 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      padding: 5px;
+      margin: 14px 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 253, 249, 0.7);
+      box-shadow: 0 8px 24px rgba(68, 54, 43, 0.08);
     }
 
     .tab {
-      flex: 1;
-      border: 1px solid var(--line);
-      background: #fffaf4;
-      color: var(--text);
-      border-radius: 8px;
+      min-height: 44px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
       padding: 10px 12px;
       font-size: 15px;
-      font-weight: 650;
+      font-weight: 760;
+      letter-spacing: 0;
     }
 
     .tab.active {
-      background: var(--accent);
-      border-color: var(--accent);
+      background: linear-gradient(135deg, var(--sage-dark), var(--sage));
       color: #fff;
+      box-shadow: 0 8px 18px rgba(11, 111, 101, 0.2);
     }
 
     .stack {
       display: grid;
-      gap: 12px;
+      gap: 14px;
     }
 
     .class-card,
-    .booking-card {
-      background: var(--card);
-      border: 1px solid var(--line);
+    .booking-card,
+    .notice {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid rgba(31, 35, 33, 0.08);
       border-radius: 8px;
-      padding: 14px;
-      box-shadow: 0 1px 2px rgba(32, 33, 36, 0.05);
+      box-shadow: var(--shadow);
+    }
+
+    .class-card {
+      overflow: hidden;
+    }
+
+    .class-hero {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      background:
+        linear-gradient(135deg, rgba(24, 163, 141, 0.12), rgba(255, 255, 255, 0.96) 54%, rgba(93, 124, 250, 0.08)),
+        var(--surface);
+      border-bottom: 1px solid var(--line);
     }
 
     .class-top,
@@ -95,68 +141,170 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 10px;
+    }
+
+    .eyebrow {
+      margin: 0 0 9px;
+      color: var(--sage-dark);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
     }
 
     .class-name,
     .booking-name {
       margin: 0;
-      font-size: 18px;
-      line-height: 1.25;
+      font-size: 28px;
+      line-height: 1.04;
+      font-weight: 850;
+      letter-spacing: 0;
+    }
+
+    .booking-name {
+      font-size: 22px;
     }
 
     .badge {
       flex: 0 0 auto;
+      border: 1px solid rgba(47, 95, 73, 0.14);
       border-radius: 999px;
-      background: #e3f1eb;
-      color: var(--accent-dark);
-      padding: 5px 9px;
+      background: #e8f7f4;
+      color: var(--sage-dark);
+      padding: 8px 10px;
       font-size: 13px;
-      font-weight: 650;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .session-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .meta-chip {
+      min-height: 54px;
+      border: 1px solid rgba(31, 35, 33, 0.08);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 9px 10px;
+    }
+
+    .meta-label {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+      margin-bottom: 3px;
+    }
+
+    .meta-value {
+      display: block;
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 780;
     }
 
     .meta {
-      margin: 0 0 12px;
+      margin: 0;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 15px;
       line-height: 1.45;
     }
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 650;
+    .booking-card {
+      padding: 16px;
     }
 
-    input,
-    select {
-      width: 100%;
-      min-height: 42px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      color: var(--text);
-      padding: 9px 10px;
-      font: inherit;
+    .booking-details {
+      margin-top: 8px;
     }
 
     .form-grid {
       display: grid;
-      gap: 10px;
-      margin-top: 12px;
+      gap: 14px;
+      padding: 18px;
+      background: var(--surface);
+    }
+
+    label,
+    .field-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 780;
+    }
+
+    input {
+      width: 100%;
+      min-height: 50px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      padding: 11px 13px;
+      font: inherit;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    input:focus {
+      border-color: rgba(95, 128, 104, 0.65);
+      box-shadow: 0 0 0 4px rgba(95, 128, 104, 0.14);
+    }
+
+    input::placeholder {
+      color: #9a948d;
+    }
+
+    .format-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      padding: 5px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-soft);
+    }
+
+    .format-option {
+      min-height: 44px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 12px;
+      font: inherit;
+      font-size: 15px;
+      font-weight: 760;
+      cursor: pointer;
+    }
+
+    .format-option.active {
+      background: #fff;
+      color: var(--ink);
+      box-shadow: 0 6px 16px rgba(68, 54, 43, 0.12);
+    }
+
+    .format-option[data-format="online"].active {
+      color: var(--sage-dark);
+    }
+
+    .format-option[data-format="offline"].active {
+      color: #a14c32;
     }
 
     button {
-      min-height: 42px;
+      min-height: 50px;
       border: 0;
       border-radius: 8px;
-      background: var(--accent);
+      background: var(--ink);
       color: #fff;
-      padding: 10px 14px;
+      padding: 12px 14px;
       font: inherit;
-      font-weight: 700;
+      font-weight: 820;
       cursor: pointer;
     }
 
@@ -165,34 +313,88 @@
       opacity: 0.65;
     }
 
+    .submit-button {
+      width: 100%;
+      margin-top: 2px;
+      background: linear-gradient(135deg, var(--sage-dark), var(--sage));
+      box-shadow: 0 14px 24px rgba(47, 95, 73, 0.22);
+    }
+
     .delete {
-      background: transparent;
-      border: 1px solid #e8bbb7;
+      min-height: 44px;
+      background: #fff3f1;
+      border: 1px solid rgba(170, 51, 40, 0.18);
       color: var(--danger);
+      padding: 8px 12px;
+      font-size: 13px;
     }
 
     .notice {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fffaf4;
-      color: var(--muted);
-      padding: 14px;
+      padding: 18px;
       font-size: 15px;
+      line-height: 1.45;
+      color: var(--muted);
     }
 
     .hidden {
       display: none;
+    }
+
+    @media (max-width: 480px) {
+      main {
+        padding: 16px 12px 28px;
+      }
+
+      .brand-card {
+        padding: 16px;
+      }
+
+      .wordmark {
+        font-size: 32px;
+      }
+
+      .subtitle {
+        font-size: 15px;
+      }
+
+      .class-name {
+        font-size: 26px;
+      }
+
+      .class-hero,
+      .form-grid {
+        padding: 16px;
+      }
+
+      .class-top,
+      .booking-top {
+        align-items: flex-start;
+      }
+
+      .badge {
+        width: fit-content;
+      }
+
+      .session-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .delete {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
   <main>
     <header>
-      <h1>YogaSpace</h1>
-      <p class="subtitle">Розклад занять і запис</p>
+      <div class="brand-card">
+        <h1 class="wordmark">Valeoyoga</h1>
+        <p class="subtitle">Обери заняття, формат і залиш ім'я. Ми збережемо запис у розкладі.</p>
+      </div>
     </header>
 
-    <div class="toolbar" role="tablist" aria-label="Разделы">
+    <div class="toolbar" role="tablist" aria-label="Розділи">
       <button class="tab active" id="classesTab" type="button">Заняття</button>
       <button class="tab" id="bookingsTab" type="button">Мої записи</button>
     </div>
@@ -269,30 +471,48 @@
 
       classesView.innerHTML = state.classes.map(item => `
         <article class="class-card">
-          <div class="class-top">
-            <h2 class="class-name">${escapeHtml(item.name || 'Заняття')}</h2>
-            <span class="badge">${escapeHtml(item.offlineSpots || '0')} місць</span>
+          <div class="class-hero">
+            <div class="class-top">
+              <div>
+                <p class="eyebrow">Доступне заняття</p>
+                <h2 class="class-name">${escapeHtml(item.name || 'Заняття')}</h2>
+              </div>
+              <span class="badge">${escapeHtml(item.offlineSpots || '0')} місць</span>
+            </div>
+            <div class="session-meta">
+              <div class="meta-chip">
+                <span class="meta-label">День</span>
+                <span class="meta-value">${escapeHtml(dayLabel(item.day))}</span>
+              </div>
+              <div class="meta-chip">
+                <span class="meta-label">Час</span>
+                <span class="meta-value">${escapeHtml(item.time || '')}</span>
+              </div>
+            </div>
           </div>
-          <p class="meta">${escapeHtml(item.day || '')} ${escapeHtml(item.time || '')}</p>
           <form class="form-grid" data-class-id="${escapeHtml(item.id)}">
             <div>
               <label>Ім'я</label>
               <input name="name" autocomplete="name" required placeholder="Як тебе записати">
             </div>
             <div>
-              <label>Формат</label>
-              <select name="format">
-                <option value="online">Онлайн</option>
-                <option value="offline">Офлайн</option>
-              </select>
+              <span class="field-label">Формат</span>
+              <input type="hidden" name="format" value="online">
+              <div class="format-toggle" role="group" aria-label="Формат заняття">
+                <button class="format-option active" type="button" data-format="online">Онлайн</button>
+                <button class="format-option" type="button" data-format="offline">Офлайн</button>
+              </div>
             </div>
-            <button type="submit">Записатися</button>
+            <button class="submit-button" type="submit">Записатися на заняття</button>
           </form>
         </article>
       `).join('');
 
       document.querySelectorAll('form[data-class-id]').forEach(form => {
         form.addEventListener('submit', addBooking);
+        form.querySelectorAll('.format-option').forEach(button => {
+          button.addEventListener('click', () => setFormat(form, button.dataset.format));
+        });
       });
     }
 
@@ -311,7 +531,7 @@
             <div class="booking-top">
               <div>
                 <h2 class="booking-name">${escapeHtml(title)}</h2>
-                <p class="meta">${escapeHtml(item.name || '')} · ${escapeHtml(item.format || '')}<br>${escapeHtml(date)}</p>
+                <p class="meta booking-details">${escapeHtml(item.name || '')} · ${formatLabel(item.format)}<br>${escapeHtml(date)}</p>
               </div>
               <button class="delete" type="button" data-booking-id="${escapeHtml(item.id)}">Видалити</button>
             </div>
@@ -327,7 +547,7 @@
     async function addBooking(event) {
       event.preventDefault();
       const form = event.currentTarget;
-      const button = form.querySelector('button');
+      const button = form.querySelector('.submit-button');
       button.disabled = true;
 
       try {
@@ -348,6 +568,13 @@
       } finally {
         button.disabled = false;
       }
+    }
+
+    function setFormat(form, format) {
+      form.querySelector('input[name="format"]').value = format;
+      form.querySelectorAll('.format-option').forEach(button => {
+        button.classList.toggle('active', button.dataset.format === format);
+      });
     }
 
     async function deleteBooking(event) {
@@ -383,6 +610,26 @@
         '"': '&quot;',
         "'": '&#039;'
       })[char]);
+    }
+
+    function formatLabel(value) {
+      if (value === 'online') return 'Онлайн';
+      if (value === 'offline') return 'Офлайн';
+      return escapeHtml(value || '');
+    }
+
+    function dayLabel(value) {
+      const days = {
+        monday: 'Понеділок',
+        tuesday: 'Вівторок',
+        wednesday: 'Середа',
+        thursday: 'Четвер',
+        friday: 'Пʼятниця',
+        saturday: 'Субота',
+        sunday: 'Неділя'
+      };
+      const key = String(value || '').trim().toLowerCase();
+      return days[key] || value || '';
     }
 
     loadData();
