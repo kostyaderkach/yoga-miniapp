@@ -59,6 +59,26 @@
       padding: 14px;
     }
 
+    .brand-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .menu-button {
+      flex: 0 0 auto;
+      min-height: 32px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--muted);
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 760;
+      box-shadow: none;
+    }
+
     .wordmark {
       margin: 0;
       color: var(--ink);
@@ -119,13 +139,6 @@
       font-weight: 820;
       text-decoration: none;
       box-shadow: 0 10px 18px rgba(11, 111, 101, 0.18);
-    }
-
-    .copy-status {
-      min-height: 18px;
-      color: var(--sage-dark);
-      font-size: 12px;
-      font-weight: 720;
     }
 
     .toolbar {
@@ -568,14 +581,15 @@
   <main>
     <header>
       <div class="brand-card">
-        <p class="subtitle">Намасте, йогині та йоги. Розклад на тиждень: обери практику, формат і залиш ім'я для запису.</p>
+        <div class="brand-head">
+          <p class="subtitle">Розклад на тиждень. Обери практику, формат і залиш ім'я для запису.</p>
+          <button class="menu-button" id="menuButton" type="button">Адмін</button>
+        </div>
         <div class="zoom-block">
           <span class="zoom-label">Посилання на Zoom</span>
           <a class="zoom-link" href="https://us06web.zoom.us/j/86091918352?pwd=O0fiU4hRliAt4PNzvckupCuDdisL3I.I" target="_blank" rel="noopener noreferrer">
             Відкрити Zoom
           </a>
-          <div class="copy-status" id="zoomCopyStatus"></div>
-          <button class="zoom-button" id="copyZoomButton" type="button">Копіювати посилання</button>
         </div>
       </div>
     </header>
@@ -592,7 +606,6 @@
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbxLBAyJqy1iO2Pvt97sUbqkqs7eZxlv3PZZYgdplA18tJBqqNWOsXCddAGg50_0Xch7/exec';
     const ADMIN_PASSWORD = 'admin';
-    const ZOOM_URL = 'https://us06web.zoom.us/j/86091918352?pwd=O0fiU4hRliAt4PNzvckupCuDdisL3I.I';
 
     const tg = window.Telegram && window.Telegram.WebApp;
     if (tg) {
@@ -617,30 +630,11 @@
     const toolbar = document.querySelector('#toolbar');
     const classesTab = document.querySelector('#classesTab');
     const bookingsTab = document.querySelector('#bookingsTab');
-    const copyZoomButton = document.querySelector('#copyZoomButton');
-    const zoomCopyStatus = document.querySelector('#zoomCopyStatus');
+    const menuButton = document.querySelector('#menuButton');
 
     classesTab.addEventListener('click', () => showView('classes'));
     bookingsTab.addEventListener('click', openAdmin);
-    copyZoomButton.addEventListener('click', copyZoomLink);
-
-    async function copyZoomLink() {
-      try {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          await navigator.clipboard.writeText(ZOOM_URL);
-        } else {
-          const input = document.createElement('textarea');
-          input.value = ZOOM_URL;
-          document.body.appendChild(input);
-          input.select();
-          document.execCommand('copy');
-          input.remove();
-        }
-        zoomCopyStatus.textContent = 'Посилання скопійовано';
-      } catch (error) {
-        zoomCopyStatus.textContent = 'Не вдалося скопіювати. Натисни посилання вище.';
-      }
-    }
+    menuButton.addEventListener('click', openAdmin);
 
     if (shouldOpenAdmin) {
       toolbar.classList.remove('hidden');
@@ -748,7 +742,7 @@
           </form>
           ` : `
           <div class="card-action">
-            <button class="expand-button" type="button" data-select-class="${escapeHtml(item.id)}">Обрати заняття</button>
+            <button class="expand-button" type="button" data-select-class="${escapeHtml(item.id)}">Записатись на практику</button>
           </div>
           `}
         </article>
