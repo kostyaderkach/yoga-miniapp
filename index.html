@@ -40,11 +40,11 @@
     main {
       width: min(720px, 100%);
       margin: 0 auto;
-      padding: 14px 12px 28px;
+      padding: 10px 10px 24px;
     }
 
     header {
-      padding: 6px 0 14px;
+      padding: 4px 0 10px;
     }
 
     .brand-card {
@@ -56,13 +56,13 @@
         linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(239, 247, 249, 0.92)),
         var(--surface);
       box-shadow: var(--shadow);
-      padding: 18px;
+      padding: 14px;
     }
 
     .wordmark {
       margin: 0;
       color: var(--ink);
-      font-size: 36px;
+      font-size: 30px;
       line-height: 1;
       font-weight: 850;
       letter-spacing: 0;
@@ -70,10 +70,10 @@
 
     .subtitle {
       max-width: 520px;
-      margin: 10px 0 0;
+      margin: 7px 0 0;
       color: var(--muted);
-      font-size: 16px;
-      line-height: 1.5;
+      font-size: 14px;
+      line-height: 1.38;
     }
 
     .toolbar {
@@ -81,7 +81,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 4px;
       padding: 5px;
-      margin: 14px 0;
+      margin: 10px 0;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: rgba(255, 253, 249, 0.7);
@@ -89,13 +89,13 @@
     }
 
     .tab {
-      min-height: 44px;
+      min-height: 40px;
       border: 0;
       border-radius: 6px;
       background: transparent;
       color: var(--muted);
       padding: 10px 12px;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 760;
       letter-spacing: 0;
     }
@@ -108,7 +108,7 @@
 
     .stack {
       display: grid;
-      gap: 14px;
+      gap: 10px;
     }
 
     .class-card,
@@ -127,8 +127,8 @@
 
     .class-hero {
       display: grid;
-      gap: 14px;
-      padding: 18px;
+      gap: 10px;
+      padding: 14px;
       background:
         linear-gradient(135deg, rgba(24, 163, 141, 0.12), rgba(255, 255, 255, 0.96) 54%, rgba(93, 124, 250, 0.08)),
         var(--surface);
@@ -146,7 +146,7 @@
     .eyebrow {
       margin: 0 0 9px;
       color: var(--sage-dark);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 800;
       letter-spacing: 0;
     }
@@ -154,7 +154,7 @@
     .class-name,
     .booking-name {
       margin: 0;
-      font-size: 28px;
+      font-size: 24px;
       line-height: 1.04;
       font-weight: 850;
       letter-spacing: 0;
@@ -170,39 +170,42 @@
       border-radius: 999px;
       background: #e8f7f4;
       color: var(--sage-dark);
-      padding: 8px 10px;
-      font-size: 13px;
+      padding: 6px 9px;
+      font-size: 12px;
       font-weight: 800;
       white-space: nowrap;
     }
 
     .session-meta {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
       gap: 8px;
     }
 
     .meta-chip {
-      min-height: 54px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 34px;
       border: 1px solid rgba(31, 35, 33, 0.08);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.7);
-      padding: 9px 10px;
-    }
-
-    .meta-label {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 750;
-      margin-bottom: 3px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      padding: 7px 10px;
     }
 
     .meta-value {
-      display: block;
+      display: inline;
       color: var(--ink);
-      font-size: 16px;
-      font-weight: 780;
+      font-size: 14px;
+      font-weight: 760;
+    }
+
+    .meta-icon {
+      color: var(--sage-dark);
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
     }
 
     .meta {
@@ -213,24 +216,134 @@
     }
 
     .booking-card {
-      padding: 16px;
+      overflow: hidden;
+      padding: 0;
     }
 
     .booking-details {
       margin-top: 8px;
     }
 
+    .booking-day {
+      display: grid;
+      gap: 8px;
+    }
+
+    .day-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 820;
+      padding: 2px 2px 0;
+    }
+
+    .day-count {
+      color: var(--sage-dark);
+      font-size: 12px;
+      font-weight: 780;
+    }
+
+    .admin-toolbar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .filter-button {
+      min-height: 40px;
+      background: var(--surface);
+      color: var(--muted);
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+
+    .filter-button.active {
+      background: linear-gradient(135deg, var(--sage-dark), var(--sage));
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(11, 111, 101, 0.18);
+    }
+
+    .booking-class-head {
+      display: grid;
+      gap: 8px;
+      padding: 13px;
+      background:
+        linear-gradient(135deg, rgba(24, 163, 141, 0.1), rgba(255, 255, 255, 0.96) 58%, rgba(93, 124, 250, 0.07)),
+        var(--surface);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .booking-class-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .booking-list {
+      display: grid;
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .booking-person {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      padding: 11px 13px;
+    }
+
+    .person-name {
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 780;
+      line-height: 1.25;
+    }
+
+    .person-format {
+      display: inline-flex;
+      width: fit-content;
+      margin-top: 4px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      color: var(--muted);
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 720;
+    }
+
     .form-grid {
       display: grid;
-      gap: 14px;
-      padding: 18px;
+      gap: 10px;
+      padding: 14px;
       background: var(--surface);
+    }
+
+    .card-action {
+      padding: 0 14px 14px;
+      background: var(--surface);
+    }
+
+    .expand-button {
+      width: 100%;
+      min-height: 40px;
+      background: #fff;
+      color: var(--sage-dark);
+      border: 1px solid rgba(11, 111, 101, 0.18);
+      box-shadow: none;
     }
 
     label,
     .field-label {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       color: var(--muted);
       font-size: 12px;
       font-weight: 780;
@@ -238,14 +351,14 @@
 
     input {
       width: 100%;
-      min-height: 50px;
+      min-height: 44px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #fff;
       color: var(--ink);
-      padding: 11px 13px;
+      padding: 9px 12px;
       font: inherit;
-      font-size: 16px;
+      font-size: 15px;
       outline: none;
       transition: border-color 0.16s ease, box-shadow 0.16s ease;
     }
@@ -270,14 +383,14 @@
     }
 
     .format-option {
-      min-height: 44px;
+      min-height: 38px;
       border: 0;
       border-radius: 6px;
       background: transparent;
       color: var(--muted);
-      padding: 10px 12px;
+      padding: 8px 10px;
       font: inherit;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 760;
       cursor: pointer;
     }
@@ -297,12 +410,12 @@
     }
 
     button {
-      min-height: 50px;
+      min-height: 44px;
       border: 0;
       border-radius: 8px;
       background: var(--ink);
       color: #fff;
-      padding: 12px 14px;
+      padding: 10px 14px;
       font: inherit;
       font-weight: 820;
       cursor: pointer;
@@ -315,18 +428,18 @@
 
     .submit-button {
       width: 100%;
-      margin-top: 2px;
+      margin-top: 0;
       background: linear-gradient(135deg, var(--sage-dark), var(--sage));
       box-shadow: 0 14px 24px rgba(47, 95, 73, 0.22);
     }
 
     .delete {
-      min-height: 44px;
+      min-height: 34px;
       background: #fff3f1;
       border: 1px solid rgba(170, 51, 40, 0.18);
       color: var(--danger);
-      padding: 8px 12px;
-      font-size: 13px;
+      padding: 7px 10px;
+      font-size: 12px;
     }
 
     .notice {
@@ -342,28 +455,28 @@
 
     @media (max-width: 480px) {
       main {
-        padding: 16px 12px 28px;
+        padding: 10px 8px 22px;
       }
 
       .brand-card {
-        padding: 16px;
+        padding: 13px;
       }
 
       .wordmark {
-        font-size: 32px;
+        font-size: 28px;
       }
 
       .subtitle {
-        font-size: 15px;
+        font-size: 13px;
       }
 
       .class-name {
-        font-size: 26px;
+        font-size: 23px;
       }
 
       .class-hero,
       .form-grid {
-        padding: 16px;
+        padding: 13px;
       }
 
       .class-top,
@@ -375,12 +488,8 @@
         width: fit-content;
       }
 
-      .session-meta {
-        grid-template-columns: 1fr;
-      }
-
       .delete {
-        width: 100%;
+        width: auto;
       }
     }
   </style>
@@ -390,13 +499,13 @@
     <header>
       <div class="brand-card">
         <h1 class="wordmark">Valeoyoga</h1>
-        <p class="subtitle">Обери заняття, формат і залиш ім'я. Ми збережемо запис у розкладі.</p>
+        <p class="subtitle">Розклад на тиждень. Обери практику, формат і залиш ім'я для запису.</p>
       </div>
     </header>
 
     <div class="toolbar" role="tablist" aria-label="Розділи">
-      <button class="tab active" id="classesTab" type="button">Заняття</button>
-      <button class="tab" id="bookingsTab" type="button">Мої записи</button>
+      <button class="tab active" id="classesTab" type="button">Розклад</button>
+      <button class="tab" id="bookingsTab" type="button">Адмін</button>
     </div>
 
     <section id="classesView" class="stack"></section>
@@ -405,6 +514,7 @@
 
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbxLBAyJqy1iO2Pvt97sUbqkqs7eZxlv3PZZYgdplA18tJBqqNWOsXCddAGg50_0Xch7/exec';
+    const ADMIN_PASSWORD = 'admin';
 
     const tg = window.Telegram && window.Telegram.WebApp;
     if (tg) {
@@ -417,6 +527,9 @@
     const state = {
       classes: [],
       bookings: [],
+      selectedClassId: null,
+      isAdmin: false,
+      bookingFilter: 'online',
       loading: false
     };
 
@@ -426,7 +539,20 @@
     const bookingsTab = document.querySelector('#bookingsTab');
 
     classesTab.addEventListener('click', () => showView('classes'));
-    bookingsTab.addEventListener('click', () => showView('bookings'));
+    bookingsTab.addEventListener('click', openAdmin);
+
+    function openAdmin() {
+      if (!state.isAdmin) {
+        const pass = prompt('Пароль адміністратора:');
+        if (pass !== ADMIN_PASSWORD) {
+          bookingsView.innerHTML = '<div class="notice">Адмін-доступ не відкрито.</div>';
+          return;
+        }
+        state.isAdmin = true;
+      }
+
+      showView('bookings');
+    }
 
     function showView(view) {
       const isClasses = view === 'classes';
@@ -471,8 +597,11 @@
         return;
       }
 
-      classesView.innerHTML = state.classes.map(item => `
-        <article class="class-card">
+      classesView.innerHTML = state.classes.map(item => {
+        const isSelected = String(state.selectedClassId) === String(item.id);
+
+        return `
+        <article class="class-card ${isSelected ? 'selected' : ''}">
           <div class="class-hero">
             <div class="class-top">
               <div>
@@ -483,15 +612,20 @@
             </div>
             <div class="session-meta">
               <div class="meta-chip">
-                <span class="meta-label">День</span>
+                <svg class="meta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7 3v3M17 3v3M4.5 9.5h15M6.5 5h13v14.5h-15V5h2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
                 <span class="meta-value">${escapeHtml(dayLabel(item.day))}</span>
               </div>
               <div class="meta-chip">
-                <span class="meta-label">Час</span>
-                <span class="meta-value">${escapeHtml(item.time || '')}</span>
+                <svg class="meta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 7v5l3 2M20 12a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="meta-value">${escapeHtml(timeLabel(item.time))}</span>
               </div>
             </div>
           </div>
+          ${isSelected ? `
           <form class="form-grid" data-class-id="${escapeHtml(item.id)}">
             <div>
               <label>Ім'я</label>
@@ -507,8 +641,14 @@
             </div>
             <button class="submit-button" type="submit">Записатися на заняття</button>
           </form>
+          ` : `
+          <div class="card-action">
+            <button class="expand-button" type="button" data-select-class="${escapeHtml(item.id)}">Обрати заняття</button>
+          </div>
+          `}
         </article>
-      `).join('');
+      `;
+      }).join('');
 
       document.querySelectorAll('form[data-class-id]').forEach(form => {
         form.addEventListener('submit', addBooking);
@@ -516,33 +656,130 @@
           button.addEventListener('click', () => setFormat(form, button.dataset.format));
         });
       });
+
+      document.querySelectorAll('[data-select-class]').forEach(button => {
+        button.addEventListener('click', () => {
+          state.selectedClassId = button.dataset.selectClass;
+          renderClasses();
+        });
+      });
     }
 
     function renderBookings() {
-      if (!state.bookings.length) {
-        bookingsView.innerHTML = '<div class="notice">Записів поки немає.</div>';
+      if (!state.isAdmin) {
+        bookingsView.innerHTML = '<div class="notice">Цей розділ доступний тільки адміністратору.</div>';
         return;
       }
 
-      bookingsView.innerHTML = state.bookings.map(item => {
-        const classItem = state.classes.find(c => String(c.id) === String(item.classId));
-        const title = classItem ? classItem.name : `Заняття #${item.classId}`;
-        const date = item.timestamp ? new Date(item.timestamp).toLocaleString('uk-UA') : '';
+      if (!state.bookings.length) {
+        bookingsView.innerHTML = `${renderAdminToolbar()}<div class="notice">Записів поки немає.</div>`;
+        bindBookingFilters();
+        return;
+      }
+
+      const filteredBookings = state.bookings.filter(item => item.format === state.bookingFilter);
+
+      if (!filteredBookings.length) {
+        bookingsView.innerHTML = `${renderAdminToolbar()}<div class="notice">Записів ${formatLabel(state.bookingFilter).toLowerCase()} поки немає.</div>`;
+        bindBookingFilters();
+        return;
+      }
+
+      const classById = new Map(state.classes.map(item => [String(item.id), item]));
+      const classOrder = new Map(state.classes.map((item, index) => [String(item.id), index]));
+      const dayGroups = new Map();
+
+      filteredBookings.forEach(item => {
+        const classItem = classById.get(String(item.classId));
+        const day = dayLabel(classItem && classItem.day ? classItem.day : 'Без дня');
+        const classKey = String(item.classId || item.id);
+
+        if (!dayGroups.has(day)) {
+          dayGroups.set(day, new Map());
+        }
+
+        const classesForDay = dayGroups.get(day);
+        if (!classesForDay.has(classKey)) {
+          classesForDay.set(classKey, {
+            classItem,
+            classId: item.classId,
+            bookings: []
+          });
+        }
+
+        classesForDay.get(classKey).bookings.push(item);
+      });
+
+      bookingsView.innerHTML = renderAdminToolbar() + Array.from(dayGroups.entries()).map(([day, classesForDay]) => {
+        const dayBookingsCount = Array.from(classesForDay.values())
+          .reduce((sum, group) => sum + group.bookings.length, 0);
+        const classGroups = Array.from(classesForDay.values())
+          .sort((a, b) => (classOrder.get(String(a.classId)) ?? 999) - (classOrder.get(String(b.classId)) ?? 999));
+
         return `
-          <article class="booking-card">
-            <div class="booking-top">
-              <div>
-                <h2 class="booking-name">${escapeHtml(title)}</h2>
-                <p class="meta booking-details">${escapeHtml(item.name || '')} · ${formatLabel(item.format)}<br>${escapeHtml(date)}</p>
-              </div>
-              <button class="delete" type="button" data-booking-id="${escapeHtml(item.id)}">Видалити</button>
+          <section class="booking-day">
+            <div class="day-title">
+              <span>${escapeHtml(day)}</span>
+              <span class="day-count">${dayBookingsCount} ${pluralPeople(dayBookingsCount)}</span>
             </div>
-          </article>
+            ${classGroups.map(group => {
+              const classItem = group.classItem;
+              const title = classItem ? classItem.name : `Заняття #${group.classId}`;
+              return `
+                <article class="booking-card">
+                  <div class="booking-class-head">
+                    <div class="booking-class-row">
+                      <h2 class="booking-name">${escapeHtml(title)}</h2>
+                      <span class="badge">${group.bookings.length} ${pluralPeople(group.bookings.length)}</span>
+                    </div>
+                    <div class="session-meta">
+                      <div class="meta-chip">
+                        <svg class="meta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="M12 7v5l3 2M20 12a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="meta-value">${escapeHtml(timeLabel(classItem && classItem.time ? classItem.time : ''))}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="booking-list">
+                    ${group.bookings.map(booking => `
+                      <div class="booking-person">
+                        <div>
+                          <div class="person-name">${escapeHtml(booking.name || 'Без імені')}</div>
+                          <span class="person-format">${formatLabel(booking.format)}</span>
+                        </div>
+                        <button class="delete" type="button" data-booking-id="${escapeHtml(booking.id)}">Видалити</button>
+                      </div>
+                    `).join('')}
+                  </div>
+                </article>
+              `;
+            }).join('')}
+          </section>
         `;
       }).join('');
 
       document.querySelectorAll('[data-booking-id]').forEach(button => {
         button.addEventListener('click', deleteBooking);
+      });
+      bindBookingFilters();
+    }
+
+    function renderAdminToolbar() {
+      return `
+        <div class="admin-toolbar" role="group" aria-label="Фільтр записів">
+          <button class="filter-button ${state.bookingFilter === 'online' ? 'active' : ''}" type="button" data-booking-filter="online">Онлайн</button>
+          <button class="filter-button ${state.bookingFilter === 'offline' ? 'active' : ''}" type="button" data-booking-filter="offline">Офлайн</button>
+        </div>
+      `;
+    }
+
+    function bindBookingFilters() {
+      document.querySelectorAll('[data-booking-filter]').forEach(button => {
+        button.addEventListener('click', () => {
+          state.bookingFilter = button.dataset.bookingFilter;
+          renderBookings();
+        });
       });
     }
 
@@ -565,7 +802,8 @@
         if (result.success) {
           form.reset();
           await loadData();
-          showView('bookings');
+          state.selectedClassId = null;
+          showView('classes');
         }
       } finally {
         button.disabled = false;
@@ -590,7 +828,7 @@
         });
         if (result.success) {
           await loadData();
-          showView('bookings');
+          if (state.isAdmin) showView('bookings');
         }
       } finally {
         button.disabled = false;
@@ -620,6 +858,14 @@
       return escapeHtml(value || '');
     }
 
+    function pluralPeople(count) {
+      const mod10 = count % 10;
+      const mod100 = count % 100;
+      if (mod10 === 1 && mod100 !== 11) return 'людина';
+      if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'людини';
+      return 'людей';
+    }
+
     function getTelegramUserName() {
       const user = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
       if (!user) return '';
@@ -644,6 +890,13 @@
       };
       const key = String(value || '').trim().toLowerCase();
       return days[key] || value || '';
+    }
+
+    function timeLabel(value) {
+      const raw = String(value || '').trim();
+      const match = raw.match(/^(\d{1,2}):(\d{2})(?::\d{2})?(?:\s?[AP]M)?$/i);
+      if (!match) return raw;
+      return `${match[1].padStart(2, '0')}:${match[2]}`;
     }
 
     loadData();
